@@ -1,0 +1,26 @@
+universe =  docker   
+docker_image = ytl0410/gridsearch_visc:16
+
+log = job_$(Cluster)_$(Process).log
+error = job_$(Cluster)_$(Process).err
+output = job_$(Cluster)_$(Process).out
+
+executable = moses_ytl_1.sh
+
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+require_gpus = (Capability >= 8.0)
+request_gpus = 1
+
++WantGPULab = true
++GPUJobLength = "long"
+
+
+request_cpus = 40
+request_memory = 100GB
+request_disk = 300GB
+
+
+queue 1

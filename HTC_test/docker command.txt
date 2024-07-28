@@ -1,0 +1,29 @@
+
+#拉取Tensorflow docker镜像
+docker pull tensorflow/tensorflow                     # latest stable release
+docker pull tensorflow/tensorflow:devel-gpu           # nightly dev release w/ GPU support
+docker pull tensorflow/tensorflow:latest-gpu-jupyter  # latest release w/ GPU support and Jupyter
+
+#运行Tensorflow docker镜像
+docker run --gpus all -it --name tf_xxx tensorflow/tensorflow:devel-gpu /bin/bash
+
+#直接用之前grid search的镜像
+docker pull ytl0410/gridsearch_visc:2
+docker run --gpus all -it --name gs_xxx ytl0410/gridsearch_visc:2 bash
+docker start gs_xxx
+docker attach gs_xxx
+mkdir xxx #新建一个文件夹
+
+#文件传输
+docker cp /home/... 5cb4325a3cdf:/xxx/ #5cb4325a3cdf 替换为新创建的container的id
+
+#上传镜像
+#先创建docker账户
+docker login
+docker commit 5cb4325a3cdf gridsearch:1 #5cb4325a3cdf 替换为新创建的container的id
+docker tag gridsearch:1 xxx/gridsearch:1 # xxx为用户名
+docker push xxx/gridsearch:1
+
+将.sh 和 .sub文件上传到CHTC后
+condor_submit submit.sub
+condor_q
